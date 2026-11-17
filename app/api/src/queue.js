@@ -16,8 +16,8 @@ async function retry(fn, label, tries = 15) {
 
 export async function connectCache() {
   const client = createClient({
-    url: `redis://:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT || 6379}`,
-  });
+  url: process.env.REDIS_URL || `redis://:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT || 6379}`,
+});
   client.on('error', (e) => console.error('redis error:', e.message));
   await retry(() => client.connect(), 'redis');
   return client;
